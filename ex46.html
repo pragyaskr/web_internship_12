@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reverse a Number</title>
+</head>
+<body>
+  <h2>Reverse a Number</h2>
+  <p>Example: If you enter <b>32243</b>, the output will be <b>34223</b>.</p>
+  <div id="output"></div>
+  <script>
+    function reverseNumber(num) {
+      return Number(num.toString().split('').reverse().join(''));
+    }
+
+    let x = 32243;
+    let reversed = reverseNumber(x);
+
+    document.getElementById('output').innerHTML =
+      "Original number: " + x + "<br>" +
+      "Reversed number: <b>" + reversed + "</b>";
+  </script>
+</body>
+</html>

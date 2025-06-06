@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Custom Form Validation Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f6f7fa;
+    }
+    .form-container {
+      background: #fff;
+      width: 420px;
+      margin: 40px auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+      padding: 32px 28px 24px 28px;
+    }
+    .form-row {
+      margin-bottom: 14px;
+    }
+    label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 7px 8px;
+      border: 1.5px solid #bbb;
+      border-radius: 4px;
+      font-size: 1em;
+      margin-bottom: 2px;
+      box-sizing: border-box;
+    }
+    .error {
+      color: #e74c3c;
+      font-size: 0.97em;
+      margin-bottom: 2px;
+      min-height: 16px;
+    }
+    .radio-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 2px;
+    }
+    .submit-btn {
+      padding: 9px 28px;
+      background: #f5a623;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1.08em;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .submit-btn:hover {
+      background: #e18c0d;
+    }
+    .success {
+      color: #27ae60;
+      font-weight: bold;
+      margin-top: 18px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <form id="customForm" novalidate>
+      <div class="form-row">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" autocomplete="off">
+        <div class="error" id="firstNameError"></div>
+      </div>
+      <div class="form-row">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" autocomplete="off">
+        <div class="error" id="lastNameError"></div>
+      </div>
+      <div class="form-row">
+        <label for="email">E-Mail</label>
+        <input type="email" id="email" autocomplete="off">
+        <div class="error" id="emailError"></div>
+      </div>
+      <div class="form-row">
+        <label for="phone">Phone #</label>
+        <input type="tel" id="phone" autocomplete="off">
+        <div class="error" id="phoneError"></div>
+      </div>
+      <div class="form-row">
+        <label for="address">Address</label>
+        <input type="text" id="address" autocomplete="off">
+        <div class="error" id="addressError"></div>
+      </div>
+      <div class="form-row">
+        <label for="city">City</label>
+        <input type="text" id="city" autocomplete="off">
+        <div class="error" id="cityError"></div>
+      </div>
+      <div class="form-row">
+        <label for="state">State</label>
+        <select id="state">
+          <option value="">Please select your state</option>
+          <option value="CA">California</option>
+          <option value="NY">New York</option>
+          <option value="TX">Texas</option>
+          <option value="FL">Florida</option>
+          <option value="Other">Other</option>
+        </select>
+        <div class="error" id="stateError"></div>
+      </div>
+      <div class="form-row">
+        <label>Do you love testing?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="loveTesting" value="Yes"> Yes</label>
+          <label><input type="radio" name="loveTesting" value="No"> No</label>
+        </div>
+        <div class="error" id="loveTestingError"></div>
+      </div>
+      <div class="form-row">
+        <label for="projectDesc">Project Description</label>
+        <textarea id="projectDesc" rows="3"></textarea>
+        <div class="error" id="projectDescError"></div>
+      </div>
+      <button type="submit" class="submit-btn">Send it</button>
+      <div class="success" id="successMsg"></div>
+    </form>
+  </div>
+  <script>
+    document.getElementById('customForm').onsubmit = function(e) {
+      e.preventDefault();
+      let valid = true;
+
+      function setError(id, msg) {
+        document.getElementById(id + "Error").textContent = msg;
+      }
+      function clearError(id) {
+        document.getElementById(id + "Error").textContent = "";
+      }
+
+      let firstName = document.getElementById('firstName').value.trim();
+      if (firstName === "") { setError('firstName', "First name is required"); valid = false; }
+      else { clearError('firstName'); }
+
+      let lastName = document.getElementById('lastName').value.trim();
+      if (lastName === "") { setError('lastName', "Last name is required"); valid = false; }
+      else { clearError('lastName'); }
+
+      let email = document.getElementById('email').value.trim();
+      let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (email === "") { setError('email', "Email is required"); valid = false; }
+      else if (!emailPattern.test(email)) { setError('email', "Enter a valid email"); valid = false; }
+      else { clearError('email'); }
+
+      let phone = document.getElementById('phone').value.trim();
+      let phonePattern = /^\d{10}$/;
+      if (phone === "") { setError('phone', "Phone number is required"); valid = false; }
+      else if (!phonePattern.test(phone)) { setError('phone', "Enter a 10-digit phone number"); valid = false; }
+      else { clearError('phone'); }
+
+      let address = document.getElementById('address').value.trim();
+      if (address === "") { setError('address', "Address is required"); valid = false; }
+      else { clearError('address'); }
+
+      let city = document.getElementById('city').value.trim();
+      if (city === "") { setError('city', "City is required"); valid = false; }
+      else { clearError('city'); }
+
+      let state = document.getElementById('state').value;
+      if (state === "") { setError('state', "Please select your state"); valid = false; }
+      else { clearError('state'); }
+
+      let loveTesting = document.querySelector('input[name="loveTesting"]:checked');
+      if (!loveTesting) { document.getElementById('loveTestingError').textContent = "Please select an option"; valid = false; }
+      else { document.getElementById('loveTestingError').textContent = ""; }
+
+      let projectDesc = document.getElementById('projectDesc').value.trim();
+      if (projectDesc === "") { setError('projectDesc', "Project description is required"); valid = false; }
+      else { clearError('projectDesc'); }
+
+      let successMsg = document.getElementById('successMsg');
+      if (valid) {
+        successMsg.textContent = "Form submitted successfully!";
+        this.reset();
+      } else {
+        successMsg.textContent = "";
+      }
+    };
+  </script>
+</body>
+</html>
